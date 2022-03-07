@@ -30,7 +30,7 @@ def performCheck(check, passportLines):
         if height >= 59 and height <= 76:
           return True
   elif check == 'hcl':
-    haircolor = search(f'^#[0-9a-f]{{6}}$', value)
+    haircolor = search(r'^#[0-9a-f]{6}$', value)
     if haircolor != None:
       return True
   elif check == 'ecl':
@@ -38,7 +38,7 @@ def performCheck(check, passportLines):
     if value in list:
       return True
   elif check == 'pid':
-    if search(f'^[0-9]{{9}}$', value) != None:
+    if search(r'^[0-9]{9}$', value) != None:
       return True
   return False
 
