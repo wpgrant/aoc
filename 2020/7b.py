@@ -1,5 +1,3 @@
-# not started yet
-
 from re import search
 from re import finditer
 
