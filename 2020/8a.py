@@ -29,6 +29,5 @@ if __name__ == '__main__':
   with open('8.txt', 'r') as file:
     rules = file.readlines()
     theRules = setupRules(rules)
-    acc = 0
-    value = runStep(theRules, 0, acc)
-    print(f'The count is {value}.') 
+    value = runStep(theRules, 0, 0)
+    print(f'The acc is {value}.') 
