@@ -3,14 +3,16 @@ import sys
 with open('1.txt', 'r') as file:
   lines = file.readlines()
 
-maxCals = 0
+calsList = []
 totCals = 0
 for cal in lines:
   if cal.strip().isnumeric():
     totCals += int(cal)
-    if (totCals > maxCals):
-      maxCals = totCals
   else:
+    calsList.append(totCals)
     totCals = 0
 
-print(maxCals)
+calsList.sort(reverse=True)
+topthree = calsList[0] + calsList[1] + calsList[2]
+#print(calsList)
+print(topthree)
