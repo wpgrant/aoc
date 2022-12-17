@@ -36,7 +36,7 @@ if __name__ == '__main__':
           # From now on we can read in the moves
           readingStacks = False
       else:
-        # Processing moves (moving crates in groups)
+        # Processing moves: moving crates in groups
         if (line.strip() != ''):
           count = int(re.match("move (\d+).*", line.strip()).group(1))
           fromStack = re.match(".*from (\d+).*", line.strip()).group(1)
