@@ -12,7 +12,7 @@ if __name__ == '__main__':
       # File is split between initial stacks (top)
       # and moves (bottom), split by a single blank
       # line. Process the stacks and then switch to
-      # the moves.
+      # the moves..
       if (readingStacks):
         if (line.strip() != ''):
           # Reading Stacks
