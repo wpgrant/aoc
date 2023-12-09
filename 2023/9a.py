@@ -18,6 +18,7 @@ def getOutput(input):
       steps.append(nextStep)
   
   # Now that we have the steps, traverse back up
+  # In part 1 we are getting the right values
   prevStep = 0
   finalVal = -1
   for iStep in range(len(steps)-1,-1,-1):
