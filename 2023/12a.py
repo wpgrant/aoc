@@ -29,7 +29,6 @@ def generateCombos(combos):
     newCombos.append(newPeriod)
   return(newCombos)
 
-
 def getCombos(part):
   # We will get a pattern, let's say 
   #   ..#??#..
