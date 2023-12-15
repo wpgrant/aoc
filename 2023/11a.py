@@ -64,9 +64,6 @@ def createMap(lines):
     map.append(row)
   return map
 
-#def calculateDistance(galaxy1, galaxy2, currentShortest):
-  # For now just ign
-
 def sumShorterstPaths(galaxies):
   sumPaths = 0
   # We will not worry about the distance between the same galaxy
