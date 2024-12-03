@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -27,12 +28,34 @@ func processFileA(fileLines []string) {
 	left := []int{}
 	right := []int{}
 	for _, line := range fileLines {
-		nums := strings.Split(line, " ")
-		leftInt, _ := strconv.Atoi(nums[0])
-		rightInt, _ := strconv.Atoi(nums[1])
+		nums := strings.Split(line, "   ")
+		leftInt, err := strconv.Atoi(nums[0])
+		if err != nil {
+			fmt.Println(err)
+		}
+		rightInt, err := strconv.Atoi(nums[1])
+		if err != nil {
+			fmt.Println(err)
+		}
 		left = append(left, leftInt)
 		right = append(right, rightInt)
 	}
+	sort.Ints(left)
+	sort.Ints(right)
+
+	diffTotal := 0
+	for i:=0; i<len(left); i++ {
+		diff := abs(left[i] - right[i])
+		diffTotal += diff
+	}
+	fmt.Println(diffTotal)
+}
+
+func abs[T float64 | int](x T) T {
+	if x < 0 {
+		return -x
+	}
+	return x
 }
 
 func main() {
