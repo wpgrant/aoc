@@ -26,39 +26,8 @@ func processFileA(fileLines []string) {
 	totSafe := 0
 	for _, line := range fileLines {
 		nums := strings.Split(line, " ")
-		lastNum := -1
-		lastChange := 0
-		lastDirection := 0
-		bSafe := true
-		for _, num := range nums {
-			iNum := atoi(num)
-			if lastNum == -1 {
-				// First number, just accept it
-				lastNum = iNum
-			} else {
-				lastChange = iNum - lastNum
-				// Check if change is a good size
-				if abs(lastChange) >= 1 && abs(lastChange) <= 3 {
-					bSafe = true
-				} else {
-					bSafe = false
-				}
-				// Check if change is right direction
-				if bSafe && (lastChange*lastDirection >= 0) {
-					bSafe = true
-				} else {
-					bSafe = false
-				}
-				// if safe, keep checking; if not, break
-				if bSafe {
-					lastDirection = lastChange
-					lastNum = iNum
-				} else {
-					break
-				}
-			}
-		}
-		if bSafe {
+		bSuccess, _ := testLevel(nums)
+		if bSuccess {
 			totSafe += 1
 		}
 	}
@@ -69,50 +38,76 @@ func processFileB(fileLines []string) {
 	totSafe := 0
 	for _, line := range fileLines {
 		nums := strings.Split(line, " ")
-		lastNum := -1
-		lastChange := 0
-		lastDirection := 0
-		bSafe := true
-		bSkippedOne := false
-		for _, num := range nums {
-			iNum := atoi(num)
-			if lastNum == -1 {
-				// First number, just accept it
-				lastNum = iNum
+		bSuccess, failedLevel := testLevel(nums)
+		if bSuccess {
+			totSafe += 1
+		} else {
+			// Test levels with 1) first removed, previous removed, and current removed
+			// First
+			testCombined := nums[1:]
+			bSuccess, _ := testLevel(testCombined)
+			if bSuccess {
+				totSafe += 1
 			} else {
-				lastChange = iNum - lastNum
-				// Check if change is a good size
-				if abs(lastChange) >= 1 && abs(lastChange) <= 3 {
-					bSafe = true
+				// Previous
+				testNums := nums[0 : failedLevel-1]
+				testRest := nums[failedLevel:]
+				testCombined := append([]string{}, testNums...)
+				testCombined = append(testCombined, testRest...)
+				bSuccess, _ := testLevel(testCombined)
+				if bSuccess {
+					totSafe += 1
 				} else {
-					bSafe = false
-				}
-				// Check if change is right direction
-				if bSafe && (lastChange*lastDirection >= 0) {
-					bSafe = true
-				} else {
-					bSafe = false
-				}
-				// if safe, keep checking; if not, break
-				if bSafe {
-					lastDirection = lastChange
-					lastNum = iNum
-				} else {
-					// Check if we skipped a level yet
-					if !bSkippedOne {
-						bSkippedOne = true
-						bSafe = true
-					} else {
-						break
+					// Current
+					testNums := nums[0:failedLevel]
+					testRest := nums[failedLevel+1:]
+					testCombined := append([]string{}, testNums...)
+					testCombined = append(testCombined, testRest...)
+					bSuccess, _ := testLevel(testCombined)
+					if bSuccess {
+						totSafe += 1
 					}
 				}
 			}
 		}
-		if bSafe {
-			totSafe += 1
-		}
 	}
 	fmt.Println("b:", totSafe)
+}
+
+func testLevel(nums []string) (success bool, levelFailed int) {
+	lastNum := -1
+	lastChange := 0
+	lastDirection := 0
+	bSafe := true
+	for i := 0; i < len(nums); i++ {
+		iNum := atoi(nums[i])
+		if lastNum == -1 {
+			// First number, just accept it
+			lastNum = iNum
+		} else {
+			lastChange = iNum - lastNum
+			// Check if change is a good size
+			if abs(lastChange) >= 1 && abs(lastChange) <= 3 {
+				bSafe = true
+			} else {
+				bSafe = false
+			}
+			// Check if change is right direction
+			if bSafe && (lastChange*lastDirection >= 0) {
+				bSafe = true
+			} else {
+				bSafe = false
+			}
+			// if safe, keep checking; if not, break
+			if bSafe {
+				lastDirection = lastChange
+				lastNum = iNum
+			} else {
+				return false, i
+			}
+		}
+	}
+	return true, -1
 }
 
 func atoi(s string) int {
