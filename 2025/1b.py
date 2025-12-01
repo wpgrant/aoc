@@ -1,12 +1,23 @@
+numZeroes = 0
+
 def adjustLock(startingLoc, instruction):
+  global numZeroes
   direction = instruction[:1]
   numSteps = int( instruction[1:] )
   if direction == 'L':
     newLoc = startingLoc - numSteps
   else:
-    newLoc = startingLoc + numSteps  
-  if newLoc < 0 or newLoc >= 100:
-    newLoc = newLoc % 100
+    newLoc = startingLoc + numSteps
+
+  if newLoc <= 0:
+    numZeroes += (abs(newLoc) // 100) + 1
+    if startingLoc == 0:
+      numZeroes -= 1 # Don't want to double-count these
+  if newLoc >= 100:
+    numZeroes += newLoc // 100
+  newLoc = newLoc % 100
+  #print(f'{numZeroes}-{newLoc}')
+
   return newLoc
 
 if __name__ == '__main__':
@@ -15,11 +26,8 @@ if __name__ == '__main__':
     lines = file.readlines()
 
     loc = 50
-    numZeroes = 0
     for line in lines:
       loc = adjustLock(loc, line)
       #print(loc)
-      if loc == 0:
-        numZeroes += 1
     
     print(numZeroes)
